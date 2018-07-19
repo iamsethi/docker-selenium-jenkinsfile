@@ -28,7 +28,7 @@ public class SearchTest extends BaseTest {
 
 	@DataProvider(name = "search-keywords")
 	public static Object[][] credentials() {
-		return new Object[][] { { "test automation guru" }, { "selenium webdriver" }, { "dockerized selenium grid" },
+		return new Object[][] { { "selenium webdriver" }, { "dockerized selenium grid" },
 				{ "test automation blog" }, { "jmeter docker" }, { "test automation guru" }, { "selenium webdriver" },
 				{ "dockerized selenium grid" }, { "test automation blog" }, { "jmeter docker" } };
 	}
