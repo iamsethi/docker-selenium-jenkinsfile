@@ -1,12 +1,10 @@
 pipeline {
-	{	
      agent {
         node {
             label 'docker'
         }
     }	
-
-  stages { 	
+   stages { 	
         stage('Build Jar') {
             steps {
                 sh 'mvn clean package -DskipTests'
@@ -30,5 +28,4 @@ pipeline {
             }
         }        
     }
-}
-}
+} 
