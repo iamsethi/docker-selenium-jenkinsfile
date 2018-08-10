@@ -6,7 +6,7 @@ pipeline {
         }
     }
 	tools { 
-        maven 'Maven 3.5.4'  
+        maven 'MAVEN'  
     }
    stages { 	
         stage('Build Jar') {
