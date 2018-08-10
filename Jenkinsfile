@@ -11,7 +11,7 @@ pipeline {
    stages { 	
         stage('Build Jar') {
             steps {
-                sh 'sudo apt-get install -y docker.io'
+                sh 'mvn clean package -DskipTests'
             }
         }
         stage('Build Image') {
