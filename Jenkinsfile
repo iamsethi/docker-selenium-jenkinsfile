@@ -11,7 +11,7 @@ pipeline {
    stages { 	
         stage('Build Jar') {
             steps {
-                sh 'apt-get install -y docker.io'
+                sh 'sudo apt-get install -y docker.io'
             }
         }
         stage('Build Image') {
