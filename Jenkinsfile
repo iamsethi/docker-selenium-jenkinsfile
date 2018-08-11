@@ -14,7 +14,8 @@ volumes: [
 ]) {
   node(label) {
     def myRepo = checkout scm
-    def gitCommit = myRepo.GIT_COMMITdef gitBranch = myRepo.GIT_BRANCHdef shortGitCommit = "${gitCommit[0..10]}"def previousGitCommit = sh(script: "git rev-parse ${gitCommit}~", returnStdout: true)
+    def gitCommit = myRepo.GIT_COMMITdef gitBranch = myRepo.GIT_BRANCHdef shortGitCommit = "${gitCommit[0..10]}"
+    def previousGitCommit = sh(script: "git rev-parse ${gitCommit}~", returnStdout: true)
  
     stage('Build Jar') {
       container('maven') {       
