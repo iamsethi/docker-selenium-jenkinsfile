@@ -49,11 +49,11 @@ volumes: [
                 script {
             parallel(
                "search-module":{
-                  sh "docker run --rm -e SELENIUM_HUB=http://206.189.138.235:31143 -e BROWSER=firefox -e MODULE=search-module.xml -v ${WORKSPACE}/search:/usr/share/tag/test-output iamsethi786/docker-selenium"
+                  sh "docker run --rm -e SELENIUM_HUB=http://206.189.138.235:31143/wd/hub -e BROWSER=firefox -e MODULE=search-module.xml -v ${WORKSPACE}/search:/usr/share/tag/test-output iamsethi786/docker-selenium"
                   archiveArtifacts artifacts: 'search/**', fingerprint: true
                },
                "order-module":{
-                  sh "docker run --rm -e SELENIUM_HUB=http://206.189.138.235:31143 -e BROWSER=chrome -e MODULE=order-module.xml -v ${WORKSPACE}/order:/usr/share/tag/test-output iamsethi786/docker-selenium"
+                  sh "docker run --rm -e SELENIUM_HUB=http://206.189.138.235:31143/wd/hub -e BROWSER=chrome -e MODULE=order-module.xml -v ${WORKSPACE}/order:/usr/share/tag/test-output iamsethi786/docker-selenium"
                   archiveArtifacts artifacts: 'order/**', fingerprint: true
                }               
             ) 
