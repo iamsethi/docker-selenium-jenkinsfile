@@ -35,7 +35,7 @@ volumes: [
       }
     }
     stage('Push Image') {
-      container('kubectl') {
+      container('docker') {
                 script {
 			        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
 			        	app.push("${BUILD_NUMBER}")
