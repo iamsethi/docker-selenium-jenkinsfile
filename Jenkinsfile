@@ -1,3 +1,4 @@
+//variables
 def label = "worker-${UUID.randomUUID().toString()}"
 def seleniumHub='http://206.189.138.235:31143/wd/hub'
 
@@ -14,7 +15,9 @@ volumes: [
 ]) {
   node(label) {
     def myRepo = checkout scm
-    def gitCommit = myRepo.GIT_COMMITdef gitBranch = myRepo.GIT_BRANCHdef shortGitCommit = "${gitCommit[0..10]}"
+    def gitCommit = myRepo.GIT_COMMIT
+    def gitBranch = myRepo.GIT_BRANCH
+    def shortGitCommit = "${gitCommit[0..10]}"
     def previousGitCommit = sh(script: "git rev-parse ${gitCommit}~", returnStdout: true)
  
     stage('Build Jar') {
@@ -59,4 +62,3 @@ volumes: [
       }
 	  }
   }
-}
