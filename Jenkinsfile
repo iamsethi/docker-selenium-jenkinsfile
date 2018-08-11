@@ -1,5 +1,5 @@
 def label = "worker-${UUID.randomUUID().toString()}"
-def seleniumHub='http://localhost:4444/wd/hub'
+def seleniumHub='http://206.189.138.235:31143/wd/hub'
 
 podTemplate(label: label, containers: [
   containerTemplate(name: 'gradle', image: 'gradle:4.5.1-jdk9', command: 'cat', ttyEnabled: true),
