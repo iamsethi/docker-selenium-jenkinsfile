@@ -1,3 +1,4 @@
+//variables
 def label = "worker-${UUID.randomUUID().toString()}"
 def seleniumHub='http://206.189.138.235:31143/wd/hub'
 
