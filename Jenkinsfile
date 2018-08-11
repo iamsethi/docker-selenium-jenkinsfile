@@ -21,23 +21,19 @@ volumes: [
    
     stage('Create Docker images') {
       container('docker') {       
-            steps {
                 script {
                 	app = docker.build("iamsethi786/docker-selenium")
                 }
-            }
       }
     }
     stage('Run kubectl') {
       container('kubectl') {
-         steps {
                 script {
 			        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
 			        	app.push("${BUILD_NUMBER}")
 			            app.push("latest")
 			        }
                 }
-            }
       }
     }
     
