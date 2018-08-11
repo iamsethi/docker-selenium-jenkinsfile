@@ -52,10 +52,12 @@ volumes: [
                 script {
              parallel(
                "search-module":{
-                  sh "docker run --rm -e SELENIUM_HUB=${seleniumHub} -e BROWSER=firefox -e MODULE=search-module.xml iamsethi786/docker-selenium"
+                  sh "docker run --rm -e SELENIUM_HUB=${seleniumHub} -e BROWSER=firefox -e MODULE=order-module.xml -v ${WORKSPACE}/order:/usr/share/tag/test-output  --network ${network} iamsethi786/docker-selenium"
+                  archiveArtifacts artifacts: 'order/**', fingerprint: true
                },
                "order-module":{
-                  sh "docker run --rm -e SELENIUM_HUB=${seleniumHub} -e BROWSER=chrome -e MODULE=order-module.xml iamsethi786/docker-selenium"
+                  sh "docker run --rm -e SELENIUM_HUB=${seleniumHub} -e BROWSER=chrome -e MODULE=order-module.xml -v ${WORKSPACE}/order:/usr/share/tag/test-output  --network ${network} iamsethi786/docker-selenium"
+                  archiveArtifacts artifacts: 'order/**', fingerprint: true
                }               
             ) 
          }
