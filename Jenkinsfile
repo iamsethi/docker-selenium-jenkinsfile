@@ -45,7 +45,8 @@ volumes: [
       }
     }
 	  stage('Run Test') {
-         steps{
+         container('docker') {
+                script {
             parallel(
                "search-module":{
                   sh "docker run --rm -e SELENIUM_HUB=http://206.189.138.235:31143 -e BROWSER=firefox -e MODULE=search-module.xml -v ${WORKSPACE}/search:/usr/share/tag/test-output iamsethi786/docker-selenium"
@@ -58,6 +59,6 @@ volumes: [
             ) 
          }
       }
-    
+	  }
   }
 }
