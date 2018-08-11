@@ -1,4 +1,10 @@
 def label = "worker-${UUID.randomUUID().toString()}"
+//variables
+def network='jenkins-${BUILD_NUMBER}'
+def seleniumHub='selenium-hub-${BUILD_NUMBER}'
+def chrome='chrome-${BUILD_NUMBER}'
+def firefox='firefox-${BUILD_NUMBER}'
+def containertest='conatinertest-${BUILD_NUMBER}'
 
 podTemplate(label: label, containers: [
   containerTemplate(name: 'gradle', image: 'gradle:4.5.1-jdk9', command: 'cat', ttyEnabled: true),
@@ -44,16 +50,27 @@ volumes: [
                 }
       }
     }
+	   stage('Setting Up Selenium Grid') {
+		    container('docker') {
+         script{        
+            sh "docker network create ${network}"
+            sh "docker run -d -p 4444:4444 --name ${seleniumHub} --network ${network} selenium/hub"
+            sh "docker run -d -e HUB_PORT_4444_TCP_ADDR=${seleniumHub} -e HUB_PORT_4444_TCP_PORT=4444 --network ${network} --name ${chrome} selenium/node-chrome"
+            sh "docker run -d -e HUB_PORT_4444_TCP_ADDR=${seleniumHub} -e HUB_PORT_4444_TCP_PORT=4444 --network ${network} --name ${firefox} selenium/node-firefox"
+         }
+      }
+	   }
+	  
 	  stage('Run Test') {
          container('docker') {
                 script {
-            parallel(
+             parallel(
                "search-module":{
-                  sh "docker run --rm -e SELENIUM_HUB=http://206.189.138.235:31143/wd/hub -e BROWSER=firefox -e MODULE=search-module.xml -v ${WORKSPACE}/search:/usr/share/tag/test-output iamsethi786/docker-selenium"
+                  sh "docker run --rm -e SELENIUM_HUB=${seleniumHub} -e BROWSER=firefox -e MODULE=search-module.xml -v ${WORKSPACE}/search:/usr/share/tag/test-output --network ${network} iamsethi786/docker-selenium"
                   archiveArtifacts artifacts: 'search/**', fingerprint: true
                },
                "order-module":{
-                  sh "docker run --rm -e SELENIUM_HUB=http://206.189.138.235:31143/wd/hub -e BROWSER=chrome -e MODULE=order-module.xml -v ${WORKSPACE}/order:/usr/share/tag/test-output iamsethi786/docker-selenium"
+                  sh "docker run --rm -e SELENIUM_HUB=${seleniumHub} -e BROWSER=chrome -e MODULE=order-module.xml -v ${WORKSPACE}/order:/usr/share/tag/test-output  --network ${network} iamsethi786/docker-selenium"
                   archiveArtifacts artifacts: 'order/**', fingerprint: true
                }               
             ) 
