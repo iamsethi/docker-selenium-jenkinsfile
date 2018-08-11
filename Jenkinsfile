@@ -1,4 +1,3 @@
-//variables
 def label = "worker-${UUID.randomUUID().toString()}"
 def seleniumHub='http://206.189.138.235:31143/wd/hub'
 
@@ -15,10 +14,7 @@ volumes: [
 ]) {
   node(label) {
     def myRepo = checkout scm
-    def gitCommit = myRepo.GIT_COMMIT
-    def gitBranch = myRepo.GIT_BRANCH
-    def shortGitCommit = "${gitCommit[0..10]}"
-    def previousGitCommit = sh(script: "git rev-parse ${gitCommit}~", returnStdout: true)
+    def gitCommit = myRepo.GIT_COMMITdef gitBranch = myRepo.GIT_BRANCHdef shortGitCommit = "${gitCommit[0..10]}"def previousGitCommit = sh(script: "git rev-parse ${gitCommit}~", returnStdout: true)
  
     stage('Build Jar') {
       container('maven') {       
@@ -52,12 +48,10 @@ volumes: [
                 script {
              parallel(
                "search-module":{
-                  sh "docker run --rm -e SELENIUM_HUB=${seleniumHub} -e BROWSER=firefox -e MODULE=order-module.xml -v ${WORKSPACE}/order:/usr/share/tag/test-output  --network ${network} iamsethi786/docker-selenium"
-                  archiveArtifacts artifacts: 'order/**', fingerprint: true
+                  sh "docker run --rm -e SELENIUM_HUB=${seleniumHub} -e BROWSER=firefox -e MODULE=search-module.xml iamsethi786/docker-selenium"
                },
                "order-module":{
-                  sh "docker run --rm -e SELENIUM_HUB=${seleniumHub} -e BROWSER=chrome -e MODULE=order-module.xml -v ${WORKSPACE}/order:/usr/share/tag/test-output  --network ${network} iamsethi786/docker-selenium"
-                  archiveArtifacts artifacts: 'order/**', fingerprint: true
+                  sh "docker run --rm -e SELENIUM_HUB=${seleniumHub} -e BROWSER=chrome -e MODULE=order-module.xml iamsethi786/docker-selenium"
                }               
             ) 
          }
